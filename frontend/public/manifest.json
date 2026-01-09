@@ -1,0 +1,18 @@
+{
+  "short_name": "Dependify",
+  "name": "Dependify LLC Nigeria",
+  "description": "Your Digital Growth Partner - LinkedIn optimization, content creation, and church CRM solutions for Nigerian businesses.",
+  "icons": [
+    {
+      "src": "https://customer-assets.emergentagent.com/job_dc770d34-828b-4b4b-a559-1e817f694ac4/artifacts/clet7dsy_dependify_logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#10B981",
+  "background_color": "#ffffff",
+  "lang": "en-NG",
+  "categories": ["business", "productivity"]
+}

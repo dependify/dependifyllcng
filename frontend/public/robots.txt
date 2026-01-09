@@ -1,0 +1,30 @@
+# Robots.txt for Dependify LLC Nigeria
+# https://dependifyllc.com.ng
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://dependifyllc.com.ng/sitemap.xml
+
+# Disallow admin or private areas (none currently)
+# Disallow: /admin/
+
+# Crawl delay for polite crawling
+Crawl-delay: 1
+
+# Allow all major search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: Baiduspider
+Allow: /

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "postgres-server": {
+      "url": "https://pgmcp.dependifyllc.com/mcp",
+      "headers": {
+        "X-Database-URL": "postgres://postgres:qqdQSD3LPmeLgpTZxwFU2djT6wvwL1hVNh7T4SU0r3x46WbQ8dUU1oJ40KFYaaw1@20.14.88.69:54332/postgres?sslmode=require"
+      }
+    }
+  }
+}
