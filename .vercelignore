@@ -1,36 +1,35 @@
-# Ignore backend folder (not used in Vercel deployment)
+# Ignore everything not needed for deployment
 backend/
-
-# Ignore test files
-tests/
-*.test.py
-*.spec.py
-
-# Ignore scripts
 scripts/
-
-# Ignore local config
-*.env
-.env.*
-!.env.example
-
-# Ignore git
+tests/
+.kiro/
+.emergent/
 .git/
 .gitignore
+.gitconfig
+*.md
+!frontend/README.md
 
-# Ignore IDE
-.vscode/
-.idea/
-
-# Ignore node_modules (handled by Vercel)
-node_modules/
-
-# Ignore build artifacts
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
 
-# Ignore Kiro/Emergent config
-.kiro/
-.emergent/
+# Local env files
+*.env
+.env.*
+!api/.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# Frontend dev files (build output is used)
+frontend/node_modules/
+frontend/src/
+frontend/public/
+frontend/plugins/
+frontend/*.js
+frontend/*.json
+!frontend/package.json
