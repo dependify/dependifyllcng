@@ -1,14 +1,10 @@
-# Ignore everything not needed for deployment
+# Ignore folders not needed for deployment
 backend/
 scripts/
 tests/
 .kiro/
 .emergent/
 .git/
-.gitignore
-.gitconfig
-*.md
-!frontend/README.md
 
 # Python cache
 __pycache__/
@@ -20,16 +16,8 @@ __pycache__/
 *.env
 .env.*
 !api/.env.example
+!backend/.env.example
 
 # IDE
 .vscode/
 .idea/
-
-# Frontend dev files (build output is used)
-frontend/node_modules/
-frontend/src/
-frontend/public/
-frontend/plugins/
-frontend/*.js
-frontend/*.json
-!frontend/package.json
