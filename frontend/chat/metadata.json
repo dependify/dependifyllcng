@@ -1,0 +1,7 @@
+{
+  "name": "Dependify AI Assistant",
+  "description": "A sophisticated AI-powered chatbot for Dependify LLC, providing real-time voice and text assistance for IT services, software solutions, and lead pre-qualification.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

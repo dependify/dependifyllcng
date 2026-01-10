@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import ChatbotEmbed from "./components/ChatbotEmbed";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/blog/:slug" element={<BlogPost />} />
           </Routes>
         </BrowserRouter>
+        <ChatbotEmbed />
       </div>
     </HelmetProvider>
   );
