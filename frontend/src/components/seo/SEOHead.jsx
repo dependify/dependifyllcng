@@ -23,7 +23,7 @@ const SEOHead = ({
   const currentUrl = `${siteUrl}${location.pathname}`;
   const defaultImage = 'https://customer-assets.emergentagent.com/job_dc770d34-828b-4b4b-a559-1e817f694ac4/artifacts/clet7dsy_dependify_logo.jpg';
   const siteName = 'Dependify LLC Nigeria';
-  
+
   const seoTitle = title ? `${title} | ${siteName}` : `${siteName} - Your Digital Growth Partner`;
   const seoDescription = description || 'Transform your Nigerian business with LinkedIn optimization, content creation, and digital tools that generate real leads and revenue. 500+ businesses transformed.';
   const seoImage = image?.startsWith('http') ? image : `${siteUrl}${image || '/logo.png'}`;
@@ -186,6 +186,23 @@ const SEOHead = ({
     }))
   } : null;
 
+  // Speakable Schema for voice search optimization
+  const speakableSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": seoTitle,
+    "url": currentUrl,
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", "h2", ".speakable-summary", "[role='main'] p:first-of-type"]
+    },
+    "mainEntity": {
+      "@type": "Organization",
+      "name": siteName,
+      "url": siteUrl
+    }
+  };
+
   return (
     <Helmet>
       {/* Primary Meta Tags */}
@@ -196,7 +213,7 @@ const SEOHead = ({
       <meta name="author" content={author} />
       <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
       <link rel="canonical" href={currentUrl} />
-      
+
       {/* Language & Geo */}
       <html lang="en-NG" />
       <meta name="language" content="English" />
@@ -204,7 +221,7 @@ const SEOHead = ({
       <meta name="geo.placename" content="Lagos, Nigeria" />
       <meta name="geo.position" content="6.4281;3.4219" />
       <meta name="ICBM" content="6.4281, 3.4219" />
-      
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
       <meta property="og:url" content={currentUrl} />
@@ -216,7 +233,7 @@ const SEOHead = ({
       <meta property="og:image:alt" content={title || siteName} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content="en_NG" />
-      
+
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={currentUrl} />
@@ -225,7 +242,7 @@ const SEOHead = ({
       <meta name="twitter:image" content={seoImage} />
       <meta name="twitter:creator" content="@dependifyllc" />
       <meta name="twitter:site" content="@dependifyllc" />
-      
+
       {/* Article specific (for blog posts) */}
       {type === 'article' && (
         <>
@@ -238,7 +255,7 @@ const SEOHead = ({
           ))}
         </>
       )}
-      
+
       {/* Mobile & PWA */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       <meta name="theme-color" content="#10B981" />
@@ -246,7 +263,7 @@ const SEOHead = ({
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="Dependify" />
-      
+
       {/* Structured Data */}
       <script type="application/ld+json">
         {JSON.stringify(organizationSchema)}
@@ -277,6 +294,9 @@ const SEOHead = ({
           {JSON.stringify(breadcrumbSchema)}
         </script>
       )}
+      <script type="application/ld+json">
+        {JSON.stringify(speakableSchema)}
+      </script>
     </Helmet>
   );
 };

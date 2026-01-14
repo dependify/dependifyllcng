@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, Send, Clock, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Mail, Phone, Send, Clock, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -28,28 +28,131 @@ const Contact = () => {
     service: '',
     message: '',
   });
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const recentPosts = blogPosts.slice(0, 2);
 
+  // Validation function
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Full name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email address is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Phone validation
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (formData.phone.replace(/\D/g, '').length < 10) {
+      newErrors.phone = 'Phone number must be at least 10 digits';
+    }
+
+    // Service validation
+    if (!formData.service) {
+      newErrors.service = 'Please select a service';
+    }
+
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = 'Please describe your goals';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form
+    if (!validateForm()) {
+      toast({
+        title: "Please fix the errors",
+        description: "Some required fields are missing or invalid.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          company: formData.company.trim() || null,
+          service: formData.service,
+          message: formData.message.trim(),
+        }),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Failed to submit form');
+      }
+
+      setIsSubmitted(true);
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Something went wrong. Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: null });
+    }
+  };
+
+  const handleServiceChange = (value) => {
+    setFormData({ ...formData, service: value });
+    if (errors.service) {
+      setErrors({ ...errors, service: null });
+    }
+  };
+
+  // Error message component
+  const ErrorMessage = ({ error }) => {
+    if (!error) return null;
+    return (
+      <div className="flex items-center gap-1.5 mt-1.5 text-red-500 text-sm">
+        <AlertCircle className="w-4 h-4" />
+        <span>{error}</span>
+      </div>
+    );
   };
 
   if (isSubmitted) {
@@ -118,7 +221,7 @@ const Contact = () => {
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl" />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-6">
@@ -159,7 +262,7 @@ const Contact = () => {
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
                 <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
                   <svg className="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">WhatsApp</h3>
@@ -205,22 +308,24 @@ const Contact = () => {
                   Fill out the form below and we'll get back to you within 24 hours.
                 </p>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name *</Label>
+                      <Label htmlFor="name">Full Name <span className="text-red-500">*</span></Label>
                       <Input
                         id="name"
                         name="name"
                         placeholder="Your full name"
                         value={formData.name}
                         onChange={handleChange}
-                        required
-                        className="h-12"
+                        className={`h-12 ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        aria-invalid={errors.name ? 'true' : 'false'}
+                        aria-describedby={errors.name ? 'name-error' : undefined}
                       />
+                      <ErrorMessage error={errors.name} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email Address *</Label>
+                      <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>
                       <Input
                         id="email"
                         name="email"
@@ -228,15 +333,17 @@ const Contact = () => {
                         placeholder="you@company.com"
                         value={formData.email}
                         onChange={handleChange}
-                        required
-                        className="h-12"
+                        className={`h-12 ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        aria-invalid={errors.email ? 'true' : 'false'}
+                        aria-describedby={errors.email ? 'email-error' : undefined}
                       />
+                      <ErrorMessage error={errors.email} />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number *</Label>
+                      <Label htmlFor="phone">Phone Number <span className="text-red-500">*</span></Label>
                       <Input
                         id="phone"
                         name="phone"
@@ -244,16 +351,18 @@ const Contact = () => {
                         placeholder="+234 800 000 0000"
                         value={formData.phone}
                         onChange={handleChange}
-                        required
-                        className="h-12"
+                        className={`h-12 ${errors.phone ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        aria-invalid={errors.phone ? 'true' : 'false'}
+                        aria-describedby={errors.phone ? 'phone-error' : undefined}
                       />
+                      <ErrorMessage error={errors.phone} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="company">Company/Organization</Label>
                       <Input
                         id="company"
                         name="company"
-                        placeholder="Your company name"
+                        placeholder="Your company name (optional)"
                         value={formData.company}
                         onChange={handleChange}
                         className="h-12"
@@ -262,12 +371,12 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="service">Service Interested In *</Label>
+                    <Label htmlFor="service">Service Interested In <span className="text-red-500">*</span></Label>
                     <Select
                       value={formData.service}
-                      onValueChange={(value) => setFormData({ ...formData, service: value })}
+                      onValueChange={handleServiceChange}
                     >
-                      <SelectTrigger className="h-12">
+                      <SelectTrigger className={`h-12 ${errors.service ? 'border-red-500 focus:ring-red-500' : ''}`}>
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
                       <SelectContent>
@@ -279,20 +388,23 @@ const Contact = () => {
                         <SelectItem value="not-sure">Not sure yet</SelectItem>
                       </SelectContent>
                     </Select>
+                    <ErrorMessage error={errors.service} />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Tell Us About Your Goals *</Label>
+                    <Label htmlFor="message">Tell Us About Your Goals <span className="text-red-500">*</span></Label>
                     <Textarea
                       id="message"
                       name="message"
                       placeholder="What challenges are you facing? What results do you want to achieve?"
                       value={formData.message}
                       onChange={handleChange}
-                      required
                       rows={5}
-                      className="resize-none"
+                      className={`resize-none ${errors.message ? 'border-red-500 focus:ring-red-500' : ''}`}
+                      aria-invalid={errors.message ? 'true' : 'false'}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
                     />
+                    <ErrorMessage error={errors.message} />
                   </div>
 
                   <Button
@@ -366,3 +478,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

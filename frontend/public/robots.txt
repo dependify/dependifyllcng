@@ -7,8 +7,8 @@ Allow: /
 # Sitemaps
 Sitemap: https://dependifyllc.com.ng/sitemap.xml
 
-# Disallow admin or private areas (none currently)
-# Disallow: /admin/
+# LLMs.txt for AI agents
+# See: https://dependifyllc.com.ng/llms.txt
 
 # Crawl delay for polite crawling
 Crawl-delay: 1
@@ -28,3 +28,36 @@ Allow: /
 
 User-agent: Baiduspider
 Allow: /
+
+# AI Crawlers - Explicitly Allowed
+# These crawlers power AI-based search and chat systems
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Disallow sensitive paths
+User-agent: *
+Disallow: /api/
+Disallow: /chatbot/
+

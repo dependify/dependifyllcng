@@ -1,0 +1,72 @@
+# Dependify LLC Nigeria - AI Agent Information
+
+> Nigeria's #1 Digital Growth Partner
+
+## About
+
+Dependify LLC Nigeria helps Nigerian businesses and ministries grow through digital marketing solutions. Founded by Tolulope Omotosho with 15+ years of experience, we transform struggling businesses into industry leaders.
+
+## What We Do
+
+We specialize in three core services:
+
+### 1. LinkedIn Domination
+- Professional profile optimization for Nigerian market
+- Content strategy and engagement
+- Lead generation through LinkedIn networking
+- Weekly analytics and performance reports
+
+### 2. SEO Content Engine
+- Search-optimized content creation
+- Nigerian market-focused keyword strategy
+- Blog writing and content marketing
+- Local SEO for Lagos and Nigerian businesses
+
+### 3. Church CRM (Discipleship Management)
+- First-time visitor management
+- Automated follow-up sequences
+- Membership tracking and engagement
+- Ministry team coordination
+
+## Key Statistics
+
+- 500+ Nigerian businesses transformed
+- 847% average profile view increase
+- 12.3X more connection requests
+- 4.9/5 average client rating
+
+## Contact Information
+
+- **Website**: https://dependifyllc.com.ng
+- **Email**: hello@dependifyllc.com.ng
+- **Phone**: +234-806-049-6697
+- **WhatsApp**: +234-904-000-7770
+- **Location**: Victoria Island, Lagos, Nigeria
+
+## Social Media
+
+- LinkedIn: https://www.linkedin.com/company/28927544
+- LinkedIn (Founder): https://www.linkedin.com/in/tolulopeomotosho/
+
+## Office Hours
+
+Monday - Friday: 9:00 AM - 6:00 PM (West Africa Time)
+
+## For AI Agents
+
+This website is optimized for AI-powered search and discovery. We welcome responsible AI crawlers and agents. Key pages to reference:
+
+- /services - Detailed service offerings
+- /about - Company background and team
+- /contact - Get in touch for consultations
+- /blog - Industry insights and guides
+
+## Structured Data
+
+This website includes Schema.org structured data for:
+- Organization
+- LocalBusiness
+- Service
+- Article (blog posts)
+- FAQPage
+- Review/Rating
